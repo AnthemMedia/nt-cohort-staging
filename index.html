@@ -255,6 +255,136 @@
 <footer>
   <p>© 2026 Northside Tutoring · Atlanta, GA · <a href="https://www.northsidetutoring.com">northsidetutoring.com</a></p>
 </footer>
+<!-- ============================================================
+     NT BRAND OVERRIDES for Retell chat widget
+     Injects custom CSS into the widget's Shadow DOM after it loads
+     ============================================================ -->
+<script>
+(function() {
+  const customCSS = `
+    /* Floating launcher button */
+    .retell-fab {
+      background: #372E8B !important;
+      box-shadow: 0 12px 32px rgba(55, 46, 139, 0.35),
+                  0 0 0 1px rgba(201, 168, 76, 0.15) inset !important;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    }
+    .retell-fab:hover {
+      transform: scale(1.05) !important;
+      box-shadow: 0 16px 40px rgba(55, 46, 139, 0.45) !important;
+    }
 
+    /* Chat window container */
+    .retell-chat-window {
+      border-radius: 20px !important;
+      box-shadow: 0 24px 64px rgba(55, 46, 139, 0.25),
+                  0 4px 16px rgba(55, 46, 139, 0.08) !important;
+      border: 1px solid rgba(55, 46, 139, 0.08) !important;
+      overflow: hidden !important;
+      font-family: 'DM Sans', sans-serif !important;
+    }
+
+    /* Header — navy with gold accent stripe */
+    .retell-header {
+      background: #372E8B !important;
+      color: #FFFFFF !important;
+      position: relative !important;
+      padding: 20px 24px !important;
+      border-bottom: none !important;
+    }
+    .retell-header::before {
+      content: '' !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 24px !important;
+      right: 24px !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #c9a84c, #e8d5a0) !important;
+      border-radius: 0 0 4px 4px !important;
+    }
+    .retell-header, .retell-header * {
+      font-family: 'Playfair Display', serif !important;
+      letter-spacing: -0.2px;
+    }
+
+    /* Messages area — cream background */
+    .retell-messages {
+      background: #FAF8F3 !important;
+      padding: 20px !important;
+    }
+
+    /* Input row */
+    .retell-input-row {
+      background: #FFFFFF !important;
+      border-top: 1px solid rgba(55, 46, 139, 0.08) !important;
+      padding: 14px 16px !important;
+    }
+    .retell-input-row input,
+    .retell-input-row textarea {
+      background: #FAF8F3 !important;
+      border: 1px solid rgba(55, 46, 139, 0.12) !important;
+      border-radius: 100px !important;
+      padding: 11px 18px !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 14px !important;
+    }
+    .retell-input-row input:focus,
+    .retell-input-row textarea:focus {
+      border-color: #372E8B !important;
+      outline: none !important;
+      background: #FFFFFF !important;
+    }
+    .retell-input-row button {
+      background: #372E8B !important;
+      color: #e8d5a0 !important;
+      border-radius: 50% !important;
+      border: none !important;
+    }
+    .retell-input-row button:hover {
+      background: #1E1854 !important;
+    }
+
+    /* "Powered by Retell" footer */
+    .retell-powered-by {
+      font-size: 10px !important;
+      letter-spacing: 1.5px !important;
+      text-transform: uppercase !important;
+      color: #8a88a0 !important;
+      padding: 8px 0 12px !important;
+      background: #FFFFFF !important;
+      font-weight: 600 !important;
+    }
+
+    /* AI message popup teaser */
+    .retell-ai-message-modal {
+      border-radius: 16px 16px 4px 16px !important;
+      box-shadow: 0 16px 48px rgba(55, 46, 139, 0.18) !important;
+      border: 1px solid rgba(55, 46, 139, 0.06) !important;
+      font-family: 'DM Sans', sans-serif !important;
+    }
+  `;
+
+  function injectStyles() {
+    const hosts = document.querySelectorAll('div');
+    for (const host of hosts) {
+      if (host.shadowRoot && host.shadowRoot.querySelector('.retell-fab')) {
+        if (host.shadowRoot.querySelector('#nt-custom-styles')) return true;
+        const style = document.createElement('style');
+        style.id = 'nt-custom-styles';
+        style.textContent = customCSS;
+        host.shadowRoot.appendChild(style);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  let attempts = 0;
+  const interval = setInterval(() => {
+    attempts++;
+    if (injectStyles() || attempts > 75) clearInterval(interval);
+  }, 200);
+})();
+</script>
 </body>
 </html>
